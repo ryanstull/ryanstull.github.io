@@ -1,0 +1,10 @@
+
+code {
+	/* ... */
+
+	&:before {
+		content: attr(data-lang);
+
+		/* Do styling and positioning */
+	}
+}
