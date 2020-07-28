@@ -8,7 +8,7 @@ tag: scala
 
 # The Problem
 
-There are many different types of errors that programmers encounter frequently, which they must guard their programs against. And of those errors, few seem more pervasive than the infamous `NullPointerException` (NPE), or it's equivalents. The cause of innumerable bugs and crashes, what programmer has not felt uneasy about the ever-present threat of this bug in their code?
+There are many different types of errors that programmers encounter frequently, which they must guard their programs against. Of those errors, few seem more pervasive than the infamous `NullPointerException` (NPE), or it's equivalents. The cause of innumerable bugs and crashes, what programmer has not felt uneasy about the ever-present threat of this bug in their code?
 
 {% include youtube.html video_hash="bLHL75H_VEM" width="560" height="315" description="Who among us hasn't felt like the man in the yellow shirt?" %}
 
@@ -31,7 +31,7 @@ The main reason why NPEs keep cropping up is because of a deficiency in the type
 This image describes the hierarchy of types within the Scala language.  As we can see from the image, `null` is a subtype of all object types (`AnyRef` in Scala).  This means that `null` can be used anywhere we're expecting an object.  (Note that all of the conclusions we'll draw based on this will apply to Java as well, since `null` works the same in Java.)
 
 This leads to some issues. Given two references as follows:
-{% highlight scala%}
+{% highlight scala %}
 val h: String = "hello";
 
 val w: String = null;
