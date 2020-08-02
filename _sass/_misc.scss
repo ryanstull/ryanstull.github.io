@@ -6,11 +6,9 @@ body {
 
 
 code {
-	/* ... */
-
-	&:before {
-		content: attr(data-lang);
-
-		/* Do styling and positioning */
-	}
+	//&:before {
+	//	content: attr(data-lang);
+	//
+	//	/* Do styling and positioning */
+	//}
 }

@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Null-safety Part 2: The Approaches"
+title:  "Null-safety Part 2: Working With Null"
 date:   2019-03-10 13:42:24 -0400
 categories: blog
 tag: scala
@@ -50,3 +50,10 @@ val option: Option[Null] = Some(null)
 {% endhighlight %}
 
 Since `Option` is just another object in the type system it can been assigned to `null`, and the `Some` subtype could contain null itself instead of being `None`.
+
+<br/>
+
+***
+
+<br/>
+## [Part 3: Introducing ScalaNullSafe]({% post_url 2019-03-10-null-safety-part3 %})

@@ -67,3 +67,10 @@ val a2 = A(B(C))
 
 opt(a2.b.c) //returns Some(C)
 {% endhighlight %}
+
+<br/>
+
+***
+
+<br/>
+## [Part 4: The Future of Scala]({% post_url 2019-03-10-null-safety-part4 %})
