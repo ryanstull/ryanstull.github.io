@@ -6,7 +6,7 @@ categories: blog
 tag: scala
 ---
 
-# The Problem
+## The Problem
 
 There are many different types of errors that programmers encounter frequently, which they must guard their programs against. Of those errors, few seem more pervasive than the infamous `NullPointerException` (NPE), or it's equivalents. The cause of innumerable bugs and crashes, what programmer has not felt uneasy about the ever-present threat of this bug in their code?
 
@@ -22,7 +22,7 @@ If you look online for explanations as to what causes an NPE, you'll be met with
 
 Null references made their first appearance AGOL W back in 1965, "simply because it was so easy to implement.", as Tony Hoare recalls.  Since then, they've become an integral part of many, if not most, mainstream programming languages.  However, as Hoare himself admits, the way in which they were implemented lead to the plethora of problems we now associate with NPEs.
 
-# The Cause
+## The Cause
 
 The main reason why NPEs keep popping up is because of a deficiency in the type systems of the languages in which they appear (I'll expand more on this in the conclusion) and the consequent decision to model `null` as the **same type or a subtype** of other values.  We'll use Scala's type system to study this problem.
 
@@ -65,7 +65,7 @@ They're both instances of calling a method which does not actually exist at runt
 
 So this is the fundamental issue: **Non-null and null references cannot be treated the same (i.e. have the same type), but many languages do treat them the same.**
 
-# Another perspective
+## Another perspective
 
 Another way of looking at this, is through the lens of one of the [SOLID principles](https://en.wikipedia.org/wiki/SOLID), the [Liskov Substitution Principle](https://en.wikipedia.org/wiki/Liskov_substitution_principle) (LSP).  The LSP is a rule which describes what properties a subtype must have in order to be a valid subtype. There are a few different ways to state the LSP, so I'll include each of them for whichever makes the most sense to you.
 
@@ -104,7 +104,7 @@ Since `null` is supposedly a valid subtype of `Person` and `Employee`, it belong
 
 We notice that the substituting an `Employee` where ever the program is expecting a `Person` will work fine, since `Employee` has a superset of the properties of `Person`.  But see the issue with `null`?  This is why `null` fundamentally should not be modeled as a subtype.  Having `null` be a subtype of all objects breaks the LSP because `null` does not possess _any_ properties, let alone a superset of properties.  So when we access a property of an object that is actually `null`, it doesn't have that property; thus breaking the LSP and causing an NPE.
 
-# The Solution
+## The Solution
 
 The solution to this problem is, conceptually, very straight forward;  the type system has to keep track of which references are possibly `null` and which are not.  If the type system knew which references were possibly `null`, then not checking if it were `null` before using it wouldn't just be bad practice and an NPE at runtime, but would become a compile time error; which is exactly what we want.
 
@@ -112,18 +112,9 @@ There are two ways that I know of that this can be implemented:  with a generic 
 
 Remember before how I mentioned that `null` being modeled as a subtype of other types was due to a deficiency in the type systems of languages where that `null` is modeled that way?  Well that deficiency is the lack of generics or type unions.  Without either one of these mechanisms, you can't create nullable versions of any existing type in the type system.
 
-# Conclusion
+## Conclusion
 
-So we can see that modeling `null` as the same type or subtype of other types in the type system is the problem with the design of `null`.
-
-In the next part, we'll examine the current strategies for dealing with null safety in Scala today, given the way `null` works.
-
-<br/>
-
-***
-
-<br/>
-## [Part 2: Working With Null]({% post_url 2019-03-10-null-safety-part2 %})
+So we can see that modeling `null` as the same type or subtype of other types in the type system is the problem with the design of `null` in most languages.
 
 ## References:
 
@@ -133,3 +124,19 @@ In the next part, we'll examine the current strategies for dealing with null saf
 * <https://en.wikipedia.org/wiki/Null_pointer>
 * <https://stackoverflow.com/questions/218384/what-is-a-nullpointerexception-and-how-do-i-fix-it>
 * <https://en.wikipedia.org/wiki/Subtyping>
+
+<br/>
+
+***
+
+In the next part, we'll examine the current strategies for dealing with null safety in Scala today, given the way `null` works.
+
+<div class="PageNavigation">
+  {% if page.previous.url %}
+    <a class="prev" href="{{page.previous.url}}">&laquo; {{page.previous.title}}</a>
+  {% endif %}
+  {% if page.next.url %}
+    <a class="next" href="{{page.next.url}}">{{page.next.title}} &raquo;</a>
+  {% endif %}
+</div>
+
