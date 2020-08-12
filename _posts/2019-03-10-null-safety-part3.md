@@ -132,6 +132,8 @@ Also the macro makes the arguments to method and function calls null-safe as wel
 
 you don't have to worry if `d` or `e` would be `null`.
 
+### Custom default for `?`
+
 For the `?` macro, you can also provide a custom default instead of `null`, by passing it in as the second parameter. For example
 
 {% highlight scala %}
@@ -276,7 +278,7 @@ If you want to run the benchmarks yourself, just run `sbt bench`.
 
 ## Conclusion
 
-These benchmarks compare all of the known ways (or at least the ways that I know of) to handle null-safety in scala. It demonstrates that the explicit null-safety is the highest performing and that the 'ScalaNullSafe' macro has equivalent performance.
+These benchmarks compare all of the known ways (or at least the ways that I know of) to handle null-safety in scala. It demonstrates that the explicit null-safety is the highest performing and that the ScalaNullSafe macro has equivalent performance.
 
 <br/>
 

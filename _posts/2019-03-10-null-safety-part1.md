@@ -12,9 +12,9 @@ There are many different types of errors that programmers encounter frequently, 
 
 {% include youtube.html video_hash="bLHL75H_VEM" width="560" height="315" description="Who among us hasn't felt like the man in the yellow shirt?" %}
 
-Why is it the case though; that we must always be on the lookout for NPEs?  Since software is all about designing reusable abstractions to deal with the complexity of our code; _surely_ this could be handled in a more rigorous and automated way than relying on every programmer to diligently check for NPEs in every line of code that they write.  There must be a way to solve this problem once and for all, no?
+Why is it the case though; that we must always be on the lookout for NPEs?  Since software is all about designing reusable abstractions to deal with the complexity of our code; _surely_ this could be handled in a more rigorous and automated way than relying on the diligence of every programmer to check for NPEs in every line of code that they write.  There must be a way to solve this problem once and for all, no?
 
-If you look online for explanations as to what causes an NPE, you'll be met with a plethora of answers;  some of which will give examples of code that will cause an NPE and other which simply state the conditions upon which an NPE will occur, but few address the fundamental reason why NPEs are so prevalent, let alone possible in the first place.
+If you look online for explanations as to what causes an NPE, you'll be met with a plethora of answers.  Some of which will give examples of code that will cause an NPE, and others which will simply state the conditions under which an NPE will occur, but few will address the fundamental reason why NPEs are so prevalent, let alone possible in the first place.
 
 > I call it my billion-dollar mistake. It was the invention of the null reference in 1965
 >
@@ -24,11 +24,11 @@ Null references made their first appearance AGOL W back in 1965, "simply because
 
 ## The Cause
 
-The main reason why NPEs keep popping up is because of a deficiency in the type systems of the languages in which they appear (I'll expand more on this in the conclusion) and the consequent decision to model `null` as the **same type or a subtype** of other values.  We'll use Scala's type system to study this problem.
+The main reason why NPEs keep popping up is because of a deficiency in the type systems of the languages in which they appear (I'll expand more on this in the conclusion) and the consequent decision to model `null` as the **same type or a subtype** of other values.  We'll use Scala's type system to study this problem.  (Note that all of the conclusions we'll draw based on this will apply to Java as well, since `null` works the same in Java.)
 
 {% include image.html url="/assets/images/posts/classhierarchy.png" description="The Scala type hierarchy" %}
 
-This image describes the hierarchy of types within the Scala language.  As we can see from the image, `null` is a subtype of all object types (`AnyRef` in Scala).  This means that `null` can be used anywhere we're expecting an object.  (Note that all of the conclusions we'll draw based on this will apply to Java as well, since `null` works the same in Java.)
+This image describes the hierarchy of types within the Scala language.  As we can see from the image, `null` is a subtype of all reference types (`AnyRef` in Scala, `java.lang.Object` in Java).  This means that `null` can be used anywhere we're expecting a reference.
 
 This leads to some issues. Given two references as follows:
 {% highlight scala %}
@@ -102,19 +102,19 @@ Since `null` is supposedly a valid subtype of `Person` and `Employee`, it belong
 
 {% include image.html url="/assets/images/posts/properties.png" description="Sets of the properties" %}
 
-We notice that the substituting an `Employee` where ever the program is expecting a `Person` will work fine, since `Employee` has a superset of the properties of `Person`.  But see the issue with `null`?  This is why `null` fundamentally should not be modeled as a subtype.  Having `null` be a subtype of all objects breaks the LSP because `null` does not possess _any_ properties, let alone a superset of properties.  So when we access a property of an object that is actually `null`, it doesn't have that property; thus breaking the LSP and causing an NPE.
+We notice that the substituting an `Employee` where ever the program is expecting a `Person` will work fine, since `Employee` has a superset of the properties of `Person`.  But see the issue with `null`?  This is why `null` fundamentally should not be modeled as the same type or a subtype.  Having `null` be a subtype of all objects breaks the LSP because `null` does not possess _any_ properties, let alone a superset of properties.  So when we access a property of an object that is actually `null`, it doesn't have that property; thus breaking the LSP and causing an NPE.
 
 ## The Solution
 
 The solution to this problem is, conceptually, very straight forward;  the type system has to keep track of which references are possibly `null` and which are not.  If the type system knew which references were possibly `null`, then not checking if it were `null` before using it wouldn't just be bad practice and an NPE at runtime, but would become a compile time error; which is exactly what we want.
 
-There are two ways that I know of that this can be implemented:  with a generic wrapper type which would denote a nullable reference, something like C#'s `Nullable<T>` or Kotlin's `T?`, or with a type union of some type `T` with `Null`.  This is planned for a future version of Scala and would look like <br/> `T | Null` which means `T` or `Null`.
+There are two ways that I know of that this can be implemented:  with a generic wrapper type which would denote a nullable reference, something like C#'s `Nullable<T>`, Scala's or Rust's `Option`, or Kotlin's `T?`, or with a type union of some type `T` with `Null`.  This is how Typescript handles `null` and this is also planned for a future version of Scala and would look like `T | Null` which means `T` or `Null`.
 
-Remember before how I mentioned that `null` being modeled as a subtype of other types was due to a deficiency in the type systems of languages where that `null` is modeled that way?  Well that deficiency is the lack of generics or type unions.  Without either one of these mechanisms, you can't create nullable versions of any existing type in the type system.
+Remember before how I mentioned that `null` being modeled as a subtype of other types was due to a deficiency in the type systems of languages where that `null` is modeled that way?  Well that deficiency is the lack of generics or union types.  Without either one of these mechanisms, you can't create nullable versions of any existing type in the type system.
 
 ## Conclusion
 
-So we can see that modeling `null` as the same type or subtype of other types in the type system is the problem with the design of `null` in most languages.
+Modeling `null` as the same type or subtype of other types in the type system is the problem with the design of `null` in most languages.
 
 ## References:
 
