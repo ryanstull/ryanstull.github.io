@@ -6,96 +6,101 @@ categories: blog
 tag: scala
 ---
 
-So how then, given this problem, are we to try to write null-safe code in Scala?  There are two different things we need to do when working with potentially absent values, keep track of them, and perform operations on them.
-
-One approach many languages have come up with a solution using a generic wrapper type, `Optional` in Java, `Option` in Scala and Rust, `Nullable` in C#, or `Maybe` in Haskell.  We'll use Scala for all the following examples.  A simplified definition of the `Option` type would look something like this:
-
-{% highlight scala %}
-sealed trait Option[+A]
-
-case class Some[A](val value: A) extends Option[A]
-case object None extends Option[Nothing]
-
-object Option {
-  def apply[A](x: A): Option[A] = if (x == null) None else Some(x)
-}
-{% endhighlight %}
-
-Now let's take a look at how it fairs at the two functions it serves
-
-## Keeping Track
-
-One could use this strategy like so:
-
-{% highlight scala %}
-def getPossiblyNullString(): String = ...
-
-val opt: Option[String] = Option(getPossiblyNullString())
-
-opt match {
-    case Some(_) => //Value is present
-    case None => //No value
-}
-{% endhighlight %}
-
-Now, everywhere you used to have a `String`, you have an `Option[String]`, so it is apparent, when you're expecting a possibly absent value.  If your codebase and the libraries you use are consistent, and use this strategy throughout, it can work very well for keeping track of absent values.
-
-However, there are some shortcomings to this approach in Scala:
-
-* Since references can still be `null`, this system "rides on top of" the default system for representing absent values (Unlike in Rust, C# and Haskell). This means there's
-somewhat of a duplication of effort, and thus two "holes" in this approach. 
-
-{% highlight scala %}
-val option: Option[Any] = null //An Option that is actually null
-
-val option: Option[Null] = Some(null) //An Option that contains null
-{% endhighlight %}
-
-* This can use more memory, since you have to store an extra reference for each optional value
-
-Though, these shortcomings are generally not a big problem in practice. 
-
-## Operations
-
-While code written with `Option` can be more verbose than regular code, it is still usually pretty straight-forward.
-
-{% highlight scala %}
-def getPossiblyNullString(): String = ...
-
-val option: Option[String] = Option(getPossiblyNullString())
-
-option match {
-     case Some(_) => //Value is present
-     case None => //No value
-}
-{% endhighlight %}
-
-There are [many methods](https://www.scala-lang.org/api/current/scala/Option.html) available on `Option` for operating on the value stored inside.
-
-Say you wanted to take a possibly null `String`, trim it, keep it if it's not empty, and then change it to upper case.  You could accomplish it like so:
-
-{% highlight scala %}
-option.map(_.trim).filter(_.length > 0).map(_.toUpperCase)
-{% endhighlight %}
-
-Despite all of these capabilities, there is one very common scenario though, where the optional code feels quite unsatisfactory.
+So how then, given this problem, are we to try to write null-safe code in Scala?  NullPointerExceptions (NPEs) occur when we try to access a field, method, or index, of an object that is actually `null`.
 
 {% highlight scala %}
 case class A(b: B)
 case class B(c: C)
-case class C(string: String)
+case object C
 
-val a = A(B(C("Hello")))
+val a: A = null
+
+a.b.c //Would result in an NPE
 {% endhighlight %}
 
-Say you wanted to extract the value of `string`. Using `Option` is somewhat clunky:
+At my work, we ran into this issue when we had to pull data out of highly nested Avro classes, sometimes 7 levels deep.  Essentially, what is missing from Scala here is a [safe navigation operator](https://www.groovy-lang.org/operators.html#_safe_navigation_operator) similar to Groovy or Kotlin.
 
-{% highlight scala %}
-Option(a)
-    .flatMap(a => Option(a.b))
-    .flatMap(b => Option(b.c))
-    .flatMap(c => Option(c.string))
-{% endhighlight %}
+In order to find the best solution to this problem, I began by enumerating all of the possible ways that I could think of to implement null-safe access.
+
+1. Explicit null safety
+   ```scala
+   if(a != null){
+       val b = a.b
+       if(b != null){
+           b.c
+       } else null
+   } else null
+   ```
+
+    Pros: Very efficient, just comprised of null-checks
+    
+    Cons: Poor readability and writability
+    
+2. Option flatmap
+
+   ```scala
+   Option(a)
+       .flatMap(a => Option(a.b))
+       .flatMap(b => Option(b.c))
+   ```
+   
+   Pros: Better read/writability, but still not great.
+       
+   Cons: High performance overhead, object allocation + virtual method calls per level of drilldown
+
+3. For Loop
+   ```scala
+   for {
+     aOpt <- Option(a)
+     b <- Option(aOpt.b)
+     c <- Option(b.c)
+   } yield c
+   ```
+   
+   Similar to the approach #2, but slightly slower and worse readability.
+   
+4. Null-safe navigator
+   ```scala
+   implicit class nullSafe[A](val a: A) extends AnyVal {
+     def ?[B <: AnyRef](f: A => B): B = if (a == null) null else f(a)
+   }
+   
+   a.?(_.b).?(_.c)
+   ```
+
+    Pros: Pretty readable syntax.  No object allocation.
+    
+    Cons: Syntax still not perfect.  1 function call per level of drilldown
+
+5. Try Catch NPE
+   ```scala
+   try { a.b.c } catch {
+     case _: NullPointerException => null
+   }
+   ```
+
+    Pros: Syntax could be very nice if abstracted out to a function
+    
+    Cons: Harsh performance penalty in case of NPE.  Could intercept other NPE
+
+Here are some benchmarks of the different approaches.
+
+{% include image.html url="/assets/images/posts/throughput 1.png" description="Performance of different null-safe implementations" %}
+
+All of the 'Present' benchmarks are where the value was actually defined and the 'Absent' ones are where one of the intermediate values, was `null`; or in other words, where an NPE would have occurred.
+
+In order to summarize the pros and cons of each approach, let's make a chart of each and evaluate them based on null-safty, read/writability, and efficiency.
+
+|                      	| Null-safe 	| Readable/Writable 	| Efficient 	|
+|----------------------	|-----------	|-------------------	|-----------	|
+| Normal access        	| ⛔         	| ✅                 	| ✅         	|
+| Explicit null-checks 	| ✅         	| ⛔                 	| ✅         	|
+| Option flatMap       	| ✅         	| ⛔                 	| ⛔         	|
+| For loop flatMap     	| ✅         	| ⚠️                 	| ⛔         	|
+| Null-safe navigator  	| ✅         	| ⚠️                 	| ⚠️         	|
+| Try-catch NPE        	| ✅         	| ✅                 	| ⚠️         	|
+
+After evaluating all of the options available, I wasn't quite satisfied, so I decided to create a new way via Scala's blackbox macros.
 
 ***
 

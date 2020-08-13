@@ -8,18 +8,7 @@ tag: scala
 
 ## Existing Options
 
-Let's review the pros and cons of all the ways of doing this:
-
-|                      	| Null-safe 	| Readable/Writable 	| Efficient 	|
-|----------------------	|-----------	|-------------------	|-----------	|
-| Normal access        	| ⛔         	| ✅                 	| ✅         	|
-| Explicit null-checks 	| ✅         	| ⛔                 	| ✅         	|
-| Option flatMap       	| ✅         	| ⛔                 	| ⛔         	|
-| For loop flatMap     	| ✅         	| ⚠️                 	| ⛔         	|
-| Null-safe navigator  	| ✅         	| ⚠️                 	| ⚠️         	|
-| Try-catch NPE        	| ✅         	| ✅                 	| ⚠️         	|
-
-So unfortunately there's at least one issue with all of these different approaches.  The best one in terms of performance is the explicit null-checks, and the only problem with it is that it's hard to read and very hard to write; but what if we could make it easy to do so?
+So unfortunately there's at least one issue with all of the different existing approaches.  The best one in terms of performance is the explicit null-checks, and the only problem with it is it's hard to read and write; but what if we could make it easy to do so?
 
 ## Enter the macro
 
@@ -250,9 +239,9 @@ Here's the result of running the included jmh benchmarks:
 
 {% include image.html url="/assets/images/posts/throughput.png" description="Performance of different null-safe implementations" %}
 
-Here's the same data in tabular form
-
-```
+<details>
+  <summary>Data in tabular form</summary>
+{% highlight text %}
 [info] Benchmark                             Mode  Cnt    Score   Error   Units
 [info] Benchmarks.fastButUnsafe             thrpt   20  230.157 ± 0.572  ops/us
 [info] Benchmarks.ScalaNullSafeAbsent       thrpt   20  428.124 ± 1.625  ops/us
@@ -270,7 +259,8 @@ Here's the same data in tabular form
 [info] Benchmarks.tryCatchSafeAbsent        thrpt   20  254.158 ± 0.686  ops/us
 [info] Benchmarks.tryCatchSafePresent       thrpt   20  230.081 ± 0.659  ops/us
 [success] Total time: 3909 s, completed Feb 24, 2019 3:03:02 PM
-```
+{% endhighlight %}
+</details><br/>
 
 You can find the source code for the JMH benchmarks [here](https://github.com/ryanstull/ScalaNullSafe/blob/ebc0ed592fa5997a9c7b868cf8cdcea590e8ae07/benchmarks/src/test/scala/com/ryanstull/nullsafe/Benchmarks.scala#L18). All of the 'Present' benchmarks are where the value was actually defined and the 'Absent' ones are where one of the intermediate values, was `null`; or in other words, where an NPE would have occurred.
 
