@@ -8,7 +8,7 @@ tag: scala
 
 ## Existing Options
 
-So unfortunately there's at least one issue with all of the different existing approaches.  The best one in terms of performance is the explicit null-checks, and the only problem with it is it's hard to read and write; but what if we could make it easy to do so?
+So unfortunately there's at least one issue with all of the different existing approaches.  The best one in terms of performance is the <a href="{{page.previous.url}}#1-explicit-null-safety"> explicit null-checks</a>, and the only problem with that is that it's hard to read and write; but what if we could make it easy to do so?
 
 ## Enter the macro
 
@@ -41,6 +41,23 @@ val a2 = A(B(C))
 {% endhighlight %}
 
 With this approach we get the best possible solution, something that is null-safe, easy to read and write, and efficient!
+
+<details markdown="1">
+  <summary>Full Comparison Chart</summary>
+  
+|                      	| Null-safe 	| Readable/Writable 	| Efficient 	|
+|----------------------	|-----------	|-------------------	|-----------	|
+| ScalaNullSafe        	| :heavy_check_mark:  	| :heavy_check_mark:️            | :heavy_check_mark:️    |
+| Normal access        	| :no_entry:         	| :heavy_check_mark:️            | :heavy_check_mark:️    |
+| Explicit null-checks 	| :heavy_check_mark:️    | :no_entry:                 	| :heavy_check_mark:️    |
+| Option flatMap       	| :heavy_check_mark:️    | :no_entry:                 	| :no_entry:         	|
+| For loop flatMap     	| :heavy_check_mark:️    | :warning:️                 	| :no_entry:         	|
+| Null-safe navigator  	| :heavy_check_mark:️    | :warning:️                 	| :warning:️         	|
+| Try-catch NPE        	| :heavy_check_mark:️    | :heavy_check_mark:️            | :warning:️         	|
+   
+</details><br/>
+
+
 
 ## How to get it
 
@@ -180,7 +197,7 @@ The null-safe coalesce operator also rewrites each arg so that it's null safe. S
 }
 {% endhighlight %}
 
-Compared to the `?` macro in the case of a single arg, the `??` macro checks that the entire expression is not null. Whereas the `?` macro would just check that the preceding elements (e.g. `a` and `b` in `a.b.c`) aren't `null` before returning the default value.
+Compared to the `?` macro, the `??` macro checks that the *entire expression* is not `null`, whereas the `?` macro would just check that the preceding elements (e.g. `a` and `b` in `a.b.c`) aren't `null` before returning the default value.
 
 ### Efficient null-checks
 
@@ -262,9 +279,7 @@ Here's the result of running the included jmh benchmarks:
 {% endhighlight %}
 </details><br/>
 
-You can find the source code for the JMH benchmarks [here](https://github.com/ryanstull/ScalaNullSafe/blob/ebc0ed592fa5997a9c7b868cf8cdcea590e8ae07/benchmarks/src/test/scala/com/ryanstull/nullsafe/Benchmarks.scala#L18). All of the 'Present' benchmarks are where the value was actually defined and the 'Absent' ones are where one of the intermediate values, was `null`; or in other words, where an NPE would have occurred.
-
-If you want to run the benchmarks yourself, just run `sbt bench`.
+You can find the source code for the JMH benchmarks [here](https://github.com/ryanstull/ScalaNullSafe/blob/ebc0ed592fa5997a9c7b868cf8cdcea590e8ae07/benchmarks/src/test/scala/com/ryanstull/nullsafe/Benchmarks.scala#L18).  If you want to run the benchmarks yourself, just run `sbt bench`.
 
 ## Conclusion
 

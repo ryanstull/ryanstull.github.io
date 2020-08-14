@@ -20,7 +20,7 @@ println(x match {
 })
 {% endhighlight %}
 
-This will open up a lot of interesting opportunities for expressiveness in the type system.  One such possibility, which is actually being added to Scala 3 as an opt-in feature, is to change where `Null` fits into the type system so that reference types are not nullable by default.
+This will open up a lot of interesting opportunities for expressiveness in the type system.  One such possibility, which is actually being added to Scala 3 as an opt-in feature, is to change where `Null` fits into the type hierarchy so that reference types are not nullable by default.
 
 The modified version would look like this:
 
@@ -38,7 +38,7 @@ Instead, you would have to use a type union to assign `null` here
 val x: String|Null = null // ok
 {% endhighlight %}
 
-Which is great!  Because this solves the original and fundamental problem we were discussing in part 1, which is being able to distinguish between nullable and non-nullable references.  
+Which is great!  Because this solves the [original and fundamental problem we were discussing in part 1]({% post_url 2019-03-10-null-safety-part1 %}#the-cause), which is being able to distinguish between nullable and non-nullable references.  
 
 I could go in depth about the exciting changes in this project and how it would work, but I'd just be reiterating the [project description](https://gist.github.com/abeln/9f79774bac111d99b3ae2cb9016a33e6), so I'll just encourage you to check that out.  There's also the description of this feature [on the dotty website](https://dotty.epfl.ch/docs/reference/other-new-features/explicit-nulls.html).  I'm very excited to see these features getting added to Scala, and I think it's a big step forward for the language.  
 

@@ -102,11 +102,11 @@ Since `null` is supposedly a valid subtype of `Person` and `Employee`, it belong
 
 {% include image.html url="/assets/images/posts/properties.png" description="Sets of the properties" %}
 
-We notice that the substituting an `Employee` where ever the program is expecting a `Person` will work fine, since `Employee` has a superset of the properties of `Person`.  But see the issue with `null`?  This is why `null` fundamentally should not be modeled as the same type or a subtype.  Having `null` be a subtype of all objects breaks the LSP because `null` does not possess _any_ properties, let alone a superset of properties.  So when we access a property of an object that is actually `null`, it doesn't have that property; thus breaking the LSP and causing an NPE.
+Notice that substituting an `Employee` wherever the program is expecting a `Person` will work fine, since `Employee` has a superset of the properties of `Person`.  But see the issue with `null`?  This is why `null` fundamentally should not be modeled as the same type or a subtype.  Having `null` be a subtype of all objects breaks the LSP because `null` does not possess _any_ properties, let alone a superset of properties.  So when we access a property of an object that is actually `null`, it doesn't have that property; thus breaking the LSP and causing an NPE.
 
 ## The Solution
 
-The solution to this problem is, conceptually, very straight forward;  the type system has to keep track of which references are possibly `null` and which are not.  If the type system knew which references were possibly `null`, then not checking if it were `null` before using it wouldn't just be bad practice and an NPE at runtime, but would become a compile time error; which is exactly what we want.
+The solution to this problem is, conceptually, very straight forward;  the type system has to keep track of which references are possibly `null` and which are not.  If the type system knew which references were possibly `null`, then not checking if it were `null` before using it wouldn't just be bad practice and an NPE at runtime, but would become an error at compile time; which is exactly what we want.
 
 There are two ways that I know of that this can be implemented:  with a generic wrapper type which would denote a nullable reference, something like C#'s `Nullable<T>`, Scala's or Rust's `Option`, or Kotlin's `T?`, or with a type union of some type `T` with `Null`.  This is how Typescript handles `null` and this is also planned for a future version of Scala and would look like `T | Null` which means `T` or `Null`.
 
@@ -128,6 +128,8 @@ Modeling `null` as the same type or subtype of other types in the type system is
 <br/>
 
 ***
+
+<br/>
 
 In the next part, we'll examine the current strategies for dealing with null safety in Scala today, given the way `null` works.
 
