@@ -85,7 +85,7 @@ try { a.b.c } catch {
 
 Here are some benchmarks of the different approaches.
 
-{% include image.html url="/assets/images/posts/throughput 1.png" description="Performance of different null-safe implementations" %}
+{% include image.html url="/images/posts/throughput 1.png" description="Performance of different null-safe implementations" %}
 
 <details>
   <summary>Data in tabular form</summary>

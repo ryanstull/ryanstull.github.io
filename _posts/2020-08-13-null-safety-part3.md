@@ -254,7 +254,7 @@ else
 
 Here's the result of running the included jmh benchmarks:
 
-{% include image.html url="/assets/images/posts/throughput.png" description="Performance of different null-safe implementations" %}
+{% include image.html url="/images/posts/throughput.png" description="Performance of different null-safe implementations" %}
 
 <details>
   <summary>Data in tabular form</summary>

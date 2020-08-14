@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-![alt text](/assets/images/about/ProPic.png "Logo Title Text 1")
+![alt text](/images/about/ProPic.png "Logo Title Text 1")
 
 My name is Ryan. I am currently working in the tech industry as a software engineer, while living in the New York area.
 

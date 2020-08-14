@@ -26,7 +26,7 @@ Null references made their first appearance AGOL W back in 1965, "simply because
 
 The main reason why NPEs keep popping up is because of a deficiency in the type systems of the languages in which they appear (I'll expand more on this in the conclusion) and the consequent decision to model `null` as the **same type or a subtype** of other values.  We'll use Scala's type system to study this problem.  (Note that all of the conclusions we'll draw based on this will apply to Java as well, since `null` works the same in Java.)
 
-{% include image.html url="/assets/images/posts/classhierarchy.png" description="The Scala type hierarchy" %}
+{% include image.html url="/images/posts/classhierarchy.png" description="The Scala type hierarchy" %}
 
 This image describes the hierarchy of types within the Scala language.  As we can see from the image, `null` is a subtype of all reference types (`AnyRef` in Scala, `java.lang.Object` in Java).  This means that `null` can be used anywhere we're expecting a reference.
 
@@ -96,11 +96,11 @@ class Employee(name: String, age: Int, company: String, salary: Int)
 
 Firstly, let's look at the set diagram of these classes, for some `Person`s `P1` and `P2`, and `Employee`s `E1` and `E2`.
 
-{% include image.html url="/assets/images/posts/members.png" description="Sets of the values" %}
+{% include image.html url="/images/posts/members.png" description="Sets of the values" %}
 
 Since `null` is supposedly a valid subtype of `Person` and `Employee`, it belongs inside of the `Employee` set; but now let's look at a set diagram of the *properties* of `Person`, `Employee` and `null`.
 
-{% include image.html url="/assets/images/posts/properties.png" description="Sets of the properties" %}
+{% include image.html url="/images/posts/properties.png" description="Sets of the properties" %}
 
 Notice that substituting an `Employee` wherever the program is expecting a `Person` will work fine, since `Employee` has a superset of the properties of `Person`.  But see the issue with `null`?  This is why `null` fundamentally should not be modeled as the same type or a subtype.  Having `null` be a subtype of all objects breaks the LSP because `null` does not possess _any_ properties, let alone a superset of properties.  So when we access a property of an object that is actually `null`, it doesn't have that property; thus breaking the LSP and causing an NPE.
 

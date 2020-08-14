@@ -24,7 +24,7 @@ This will open up a lot of interesting opportunities for expressiveness in the t
 
 The modified version would look like this:
 
-{% include image.html url="/assets/images/posts/51210362-9bf86900-18e0-11e9-9485-f40dc9061527.png" description="New Scala type hierarchy with explicit null enabled" %}
+{% include image.html url="/images/posts/51210362-9bf86900-18e0-11e9-9485-f40dc9061527.png" description="New Scala type hierarchy with explicit null enabled" %}
 
 Which would mean the following code would no longer typecheck
 
