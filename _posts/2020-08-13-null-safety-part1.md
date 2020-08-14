@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Null-safety Part 1: The Problem"
-date:   2019-03-10 13:42:24 -0400
+date:   2020-08-13 13:42:24 -0400
 categories: blog
 tag: scala
 ---
