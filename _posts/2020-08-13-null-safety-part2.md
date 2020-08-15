@@ -23,14 +23,14 @@ Most Scala programmers would opt to wrap their code in `Option` in order to avoi
 In order to find the best solution to this problem, I began by enumerating all of the possible ways that I could think of to implement null-safe access.
 
 #### 1. Explicit null safety
-```scala
+{% highlight scala %}
 if(a != null){
    val b = a.b
    if(b != null){
        b.c
    } else null
 } else null
-```
+{% endhighlight %}
 
 **Pros:** Very efficient, just comprised of null-checks
 
@@ -38,46 +38,46 @@ if(a != null){
     
 #### 2. Option flatmap
 
-```scala
+{% highlight scala %}
 Option(a)
    .flatMap(a => Option(a.b))
    .flatMap(b => Option(b.c))
-```
+{% endhighlight %}
 
 **Pros:** Better read/writability, but still not great.
    
 **Cons:** High performance overhead, object allocation + virtual method calls per level of drilldown
 
 #### 3. For Loop
-```scala
+{% highlight scala %}
 for {
  aOpt <- Option(a)
  b <- Option(aOpt.b)
  c <- Option(b.c)
 } yield c
-```
+{% endhighlight %}
 
 Similar to the approach #2, but slightly slower and worse readability.
    
 #### 4. Null-safe navigator
-```scala
+{% highlight scala %}
 implicit class nullSafe[A](val a: A) extends AnyVal {
  def ?[B <: AnyRef](f: A => B): B = if (a == null) null else f(a)
 }
 
 a.?(_.b).?(_.c)
-```
+{% endhighlight %}
 
 **Pros:** Pretty readable syntax.  No object allocation.
 
 **Cons:** Syntax still not perfect.  1 function call per level of drilldown
 
 #### 5. Try Catch NPE
-```scala
+{% highlight scala %}
 try { a.b.c } catch {
  case _: NullPointerException => null
 }
-```
+{% endhighlight %}
 
 **Pros:** Syntax could be very nice if abstracted out to a function
 
@@ -108,7 +108,7 @@ Here are some benchmarks of the different approaches.
 
 In order to summarize the pros and cons of each approach, let's evaluate them based on null-safty, read/writability, and efficiency.
 
-|                      	| Null-safe 	| Readable/Writable 	| Efficient 	|
+|                      	| Null-safe 	| Readable / Writable 	| Efficient 	|
 |----------------------	|-----------	|-------------------	|-----------	|
 | Normal access        	| :no_entry:         	| :heavy_check_mark:️            | :heavy_check_mark:️    |
 | Explicit null-checks 	| :heavy_check_mark:️    | :no_entry:                 	| :heavy_check_mark:️    |
@@ -128,10 +128,6 @@ After evaluating all of the options available, I wasn't quite satisfied with any
 ***
 
 <div class="PageNavigation">
-  {% if page.previous.url %}
-    <a class="prev" href="{{page.previous.url}}">&laquo; {{page.previous.title}}</a>
-  {% endif %}
-  {% if page.next.url %}
-    <a class="next" href="{{page.next.url}}">{{page.next.title}} &raquo;</a>
-  {% endif %}
+  {% include navigation_link.html reference=page.previous class='prev' %}
+  {% include navigation_link.html reference=page.next class='next' %}
 </div>

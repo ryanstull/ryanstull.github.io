@@ -1,0 +1,66 @@
+.hexagon {
+	position: relative;
+	margin: 60px auto;
+	width: 152px;
+	height: 88px;
+	background-position: center center;
+	z-index: 1;
+	/* Text styling */
+	line-height: 110px;
+	text-align: center;
+	font-family: sans-serif;
+	font-weight: bold;
+	color: #fff;
+	color: rgba(255, 255, 255, .5);
+	cursor: pointer;
+	transition: color 500ms ease, text-shadow 500ms ease;
+}
+
+.hexagon .face1,
+.hexagon .face2 {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background: inherit;
+	z-index: -1;
+	/* Keeps borders smooth in webkit */
+	backface-visibility: hidden;
+}
+
+.hexagon .face1:before,
+.hexagon .face2:before {
+	content: '';
+	position: absolute;
+	width: 176px;
+	height: 176px;
+	background: inherit;
+}
+
+.hexagon .face1 {
+	//-webkit-transform: rotate(60deg);
+	transform: rotate(60deg);
+}
+
+.hexagon .face1:before {
+	left: 0;
+	//-webkit-transform-origin: left top;
+	transform-origin: left top;
+	//-webkit-transform: rotate(-60deg) translate(-88px, 0);
+	transform: rotate(-60deg) translate(-88px, 0);
+}
+
+.hexagon .face2 {
+	//-webkit-transform: rotate(-60deg);
+	transform: rotate(-60deg);
+}
+
+.hexagon .face2:before {
+	right: 0;
+	//-webkit-transform-origin: right top;
+	transform-origin: right top;
+	//-webkit-transform: rotate(60deg) translate(88px, 0);
+	transform: rotate(60deg) translate(88px, 0);
+}

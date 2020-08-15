@@ -45,7 +45,7 @@ With this approach we get the best possible solution, something that is null-saf
 <details markdown="1">
   <summary>Full Comparison Chart</summary>
   
-|                      	| Null-safe 	| Readable/Writable 	| Efficient 	|
+|                      	| Null-safe 	| Readable / Writable 	| Efficient 	|
 |----------------------	|-----------	|-------------------	|-----------	|
 | ScalaNullSafe        	| :heavy_check_mark:  	| :heavy_check_mark:️            | :heavy_check_mark:️    |
 | Normal access        	| :no_entry:         	| :heavy_check_mark:️            | :heavy_check_mark:️    |
@@ -294,10 +294,6 @@ These benchmarks compare all of the known ways (or at least the ways that I know
 In the next section we'll examine how the usage of `null` will evolve in the next major version of Scala, Scala 3, AKA Dotty.
 
 <div class="PageNavigation">
-  {% if page.previous.url %}
-    <a class="prev" href="{{page.previous.url}}">&laquo; {{page.previous.title}}</a>
-  {% endif %}
-  {% if page.next.url %}
-    <a class="next" href="{{page.next.url}}">{{page.next.title}} &raquo;</a>
-  {% endif %}
+  {% include navigation_link.html reference=page.previous class='prev' %}
+  {% include navigation_link.html reference=page.next class='next' %}
 </div>

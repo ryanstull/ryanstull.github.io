@@ -1,0 +1,37 @@
+#proPicWrapper {
+	float: left;
+	background-color: white;
+	border: 1px solid gray;
+	padding: 2px;
+	margin-right: 1rem;
+	@media (max-width: $switchWidth1) {
+		float: none;
+		margin: 0;
+	}
+
+	img {
+		$img_size: 12rem;
+		width: $img_size;
+		height: $img_size;
+		display: block;
+	}
+}
+
+#about {
+	font-size: 1.25em;
+
+	@media (max-width: $switchWidth1) {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.footnote {
+		font-size: 1rem;
+	}
+
+	.asterisk {
+		color: $teal;
+	}
+}

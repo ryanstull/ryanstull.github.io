@@ -45,10 +45,6 @@ I could go in depth about the exciting changes in this project and how it would 
 Hopefully you've found this series useful, and you will find the ScalaNullSafe macro useful for the rest of the time you're using Scala 2 :sweat_smile:.  Thanks!
 
 <div class="PageNavigation">
-  {% if page.previous.url %}
-    <a class="prev" href="{{page.previous.url}}">&laquo; {{page.previous.title}}</a>
-  {% endif %}
-  {% if page.next.url %}
-    <a class="next" href="{{page.next.url}}">{{page.next.title}} &raquo;</a>
-  {% endif %}
+  {% include navigation_link.html reference=page.previous class='prev' %}
+  {% include navigation_link.html reference=page.next class='next' %}
 </div>

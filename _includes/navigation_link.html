@@ -1,0 +1,12 @@
+{% if include.reference %}
+<a class="{{include.class}}" href="{{include.reference.url}}">
+	{% if include.class == "prev" %}
+		{% assign product_vals = include.reference.title | prepend:"&laquo; " | split:":" %}
+	{% else %}
+		{% assign product_vals = include.reference.title | append:" &raquo;" | split:":" %}
+	{% endif %}
+	{% for item in product_vals%}
+	<span style="display: inline-block">{{item}}{% if forloop.index == 1 %}:{% endif %}</span>
+	{% endfor %}
+</a>
+{% endif %}

@@ -1,37 +1,96 @@
 
+$nameFont: 'Oswald', sans-serif;
+$textFont: 'Sanchez', serif;
+$fancyText: 'Open Sans', sans-serif;
 
-body {
-	//background-image: url("/assets/images/bg.jpg");
+$rustOrange: #fb8821;
+$teal: #49d3ca;
+$lightTeal: #98e6e1;
+$bgColor: #383838;
+
+$switchWidth2: 400px;
+$switchWidth1: 500px;
+
+.highlight {
+	position: relative;
 }
-
 
 code {
-	//&:before {
-	//	content: attr(data-lang);
-	//
-	//	/* Do styling and positioning */
-	//}
+	&::before {
+		content: attr(data-lang);
+		position: absolute;
+		box-sizing: inherit;
+		top: -1em;
+		//left: .2rem;
+		right: 1em;
+		font-size: .75em;
+		color: coral;
+		background-color: white;
+		border-radius: 5px;
+		padding: 2px;
+		border: solid 1px #c9c9c9;
+		text-transform: uppercase;
+	}
+
+	padding-top: 1em;
 }
+
+
 
 .PageNavigation {
-	font-size: 18px;
+	font-size: 17px;
 	display: block;
 	width: auto;
-	overflow: hidden;
-}
+	//overflow: hidden;
+	//white-space: nowrap;
 
-.PageNavigation a {
-	display: block;
-	width: 50%;
-	float: left;
-	margin: 1em 0;
-}
+	a {
+		display: block;
+		width: 50%;
+		float: left;
+		margin: 1em 0;
+	}
 
-.PageNavigation .next {
-	text-align: right;
-}
+	.prev {
+		float: left;
+		text-align: left;
+	}
 
+	.next {
+		float: right;
+		text-align: right;
+	}
+
+	.next:hover {
+		span{
+			text-decoration: underline;
+		}
+	}
+	.prev:hover {
+		span{
+			text-decoration: underline;
+		}
+	}
+}
 
 summary {
 	cursor: pointer;
+}
+
+iframe.youtube {
+	@media (min-width: 600px) {
+		width: 560px;
+	}
+
+	@media (max-width: 600px) {
+		width: 100%;
+	}
+}
+
+th {
+	text-align: center;
+}
+
+td {
+	text-align: center;
 }

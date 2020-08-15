@@ -1,0 +1,24 @@
+.proj_construc_wrap {
+	position: relative;
+	flex: 0 0 18rem;
+
+	a {
+		opacity: .4;
+	}
+
+	.hexagon {
+		cursor: default;
+	}
+}
+
+.construction_image {
+	position: absolute;
+	top: 35%;
+	left: 30%;
+	z-index: 2;
+	$picsize: 5rem;
+	height: $picsize;
+	width: $picsize*1.617;
+	box-shadow: 0 0 9px 0 black;
+	transform: rotate(-6deg);
+}

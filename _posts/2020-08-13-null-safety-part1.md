@@ -10,7 +10,7 @@ tag: scala
 
 There are many different types of errors that programmers encounter frequently, which they must guard their programs against. Of those errors, few seem more pervasive than the infamous `NullPointerException` (NPE), or it's equivalents. The cause of innumerable bugs and crashes, what programmer has not felt uneasy about the ever-present threat of this bug in their code?
 
-{% include youtube.html video_hash="bLHL75H_VEM" width="560" height="315" description="Who among us hasn't felt like the man in the yellow shirt?" %}
+{% include youtube.html video_hash="bLHL75H_VEM" height="315" description="Who among us hasn't felt like the man in the yellow shirt?" %}
 
 Why is it the case though; that we must always be on the lookout for NPEs?  Since software is all about designing reusable abstractions to deal with the complexity of our code; _surely_ this could be handled in a more rigorous and automated way than relying on the diligence of every programmer to check for NPEs in every line of code that they write.  There must be a way to solve this problem once and for all, no?
 
@@ -32,8 +32,6 @@ This image describes the hierarchy of types within the Scala language.  As we ca
 
 This leads to some issues. Given two references as follows:
 {% highlight scala %}
-//scala
-
 val a: String = "hello";
 
 val b: String = null;
@@ -42,8 +40,6 @@ val b: String = null;
 We can't tell just by looking at the type signatures which is `null` and which isn't; so in a sense, the type system is telling us that these two objects can be used in the same way; but they cannot!
 
 {% highlight scala %}
-//scala
-
 a.substring(2); // "llo"
 
 b.substring(2); // throws NullPointerException
@@ -54,8 +50,6 @@ Since the whole purpose of static type systems is to understand what can and can
 From this perspective we see that an NPE is similar to the type of error one encounters when calling a method that doesn't exist on an object in a dynamically typed language; though in the former case, this _should_ be preventable by the type system.
 
 {% highlight javascript %}
-//javascript
-
 var string = 'Hello'
 
 string.abc() // TypeError: s.abc is not a function
@@ -86,8 +80,6 @@ So what the LSP is saying is, because in most languages subtypes can be used any
 To use a classic example from OOP textbooks, let's look at the relationship between a `Person` and an `Employee`.
 
 {% highlight scala%}
-//scala 
-
 class Person(name: String, age: Int)
 
 class Employee(name: String, age: Int, company: String, salary: Int)
@@ -134,11 +126,8 @@ Modeling `null` as the same type or subtype of other types in the type system is
 In the next part, we'll examine the current strategies for dealing with null safety in Scala today, given the way `null` works.
 
 <div class="PageNavigation">
-  {% if page.previous.url %}
-    <a class="prev" href="{{page.previous.url}}">&laquo; {{page.previous.title}}</a>
-  {% endif %}
-  {% if page.next.url %}
-    <a class="next" href="{{page.next.url}}">{{page.next.title}} &raquo;</a>
-  {% endif %}
+
+  {% include navigation_link.html reference=page.previous class='prev' %}
+  {% include navigation_link.html reference=page.next class='next' %}
 </div>
 
