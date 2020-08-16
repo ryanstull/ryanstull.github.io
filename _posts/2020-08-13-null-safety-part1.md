@@ -26,7 +26,7 @@ Null references made their first appearance AGOL W back in 1965, "simply because
 
 The main reason why NPEs keep popping up is because of a deficiency in the type systems of the languages in which they appear (I'll expand more on this in the conclusion) and the consequent decision to model `null` as the **same type or a subtype** of other values.  We'll use Scala's type system to study this problem.  (Note that all of the conclusions we'll draw based on this will apply to Java as well, since `null` works the same in Java.)
 
-{% include image.html url="https://media.githubusercontent.com/media/ryanstull/ryanstull.github.io/master/images/posts/classhierarchy.png?raw=true" description="The Scala type hierarchy" %}
+{% include image.html url="/images/posts/classhierarchy.png" description="The Scala type hierarchy" %}
 
 This image describes the hierarchy of types within the Scala language.  As we can see from the image, `null` is a subtype of all reference types (`AnyRef` in Scala, `java.lang.Object` in Java).  This means that `null` can be used anywhere we're expecting a reference.
 
