@@ -1,6 +1,18 @@
 ---
 ---
 
-@import "misc";
+$nameFont: 'Oswald', sans-serif;
+$textFont: 'Sanchez', serif;
+$fancyText: 'Open Sans', sans-serif;
+
+$rustOrange: #fb8821;
+$teal: #49d3ca;
+$lightTeal: #98e6e1;
+$bgColor: #383838;
+
+$switchWidth2: 400px;
+$switchWidth1: 500px;
+
 @import "projects";
 @import "about";
+@import "misc";

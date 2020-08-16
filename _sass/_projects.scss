@@ -1,23 +1,25 @@
-#projects {
+.projects {
 	display: flex;
 	justify-content: space-around;
 	flex-wrap: wrap;
 
 	@import "templates/construction";
+	@import "templates/hexagon";
 
 	.project {
 		display: flex;
 		flex: 0 0 18rem;
 		flex-direction: column;
 		text-decoration: none;
-		margin: .5rem .1rem .5rem .1rem;
+		position: relative;
+		margin: 2rem .1rem .5rem .1rem;
 
 		span {
 			display: flex;
 			color: black;
 			justify-content: flex-end;
 			font-family: $nameFont;
-			font-size: 2rem;
+			font-size: 1.8rem;
 			margin-bottom: -.2rem;
 			min-height: 3rem;
 		}
@@ -35,9 +37,11 @@
 
 		.proj_desc {
 			height: 5.5rem;
+			width: 10em;
 			font-family: $textFont;
 			font-size: .75rem;
-			padding-left: 1.5rem;
+			position: absolute;
+			right: 0;
 			color: white;
 
 			ul {
@@ -47,4 +51,17 @@
 	}
 }
 
-@import "hex_projects";
+.hexagon {
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+}
+
+.face1 {
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+}
+
+.face2 {
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+}
