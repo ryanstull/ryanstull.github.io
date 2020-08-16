@@ -11,8 +11,8 @@ permalink: /about/
 	<div class="personal_words">
 		My name is Ryan. I am currently working in the tech industry as a software engineer, while living in the New York area.<br/> <br/>
 		I've been programming since I was in high school, and I've always been very passionate about developing quality software.
-		I recently completed my BS in Computer Science and Physics at Saint Joseph's University.
-		My professional interests include application development, simulation, cyber security, and in general any cross disciplinary subjects between
+		I completed my BS in Computer Science and Physics at Saint Joseph's University.
+		My professional interests include application development, simulation, big data, and in general any cross disciplinary subjects between
 		CompSci and Math/Physics.
         <br/> <br/>
         Outside of work my interests include skiing, MMA, science and tech in general, piano, concerts, frisbee, and the shore<span class="asterisk">*</span>!
