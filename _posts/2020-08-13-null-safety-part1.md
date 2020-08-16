@@ -20,7 +20,7 @@ If you look online for explanations as to what causes an NPE, you'll be met with
 >
 > -Tony Hoare
 
-Null references made their first appearance AGOL W back in 1965, "simply because it was so easy to implement.", as Tony Hoare recalls.  Since then, they've become an integral part of many, if not most, mainstream programming languages.  However, as Hoare himself admits, the way in which they were implemented lead to the plethora of problems we now associate with NPEs.
+Null references made their first appearance AGOL W back in 1965, "simply because it was so easy to implement.", as Tony Hoare recalls.  Since then, they've become an integral part of many, if not most, mainstream programming languages; however, as Hoare himself admits, the way in which they were implemented lead to the plethora of problems we now associate with NPEs.
 
 ## The Cause
 
@@ -47,7 +47,7 @@ b.substring(2); // throws NullPointerException
 
 Since the whole purpose of static type systems is to understand what can and cannot be done to a certain value at compile time, we can see that conflating non-null and null references is a form of violating static type safety, even if the language doesn't acknowledge it.
 
-From this perspective we see that an NPE is similar to the type of error one encounters when calling a method that doesn't exist on an object in a dynamically typed language; though in the former case, this _should_ be preventable by the type system.
+From this perspective, we see that an NPE is similar to the type of error one encounters when calling a method that doesn't exist on an object in a dynamically typed language; though in the former case, this _should_ be preventable by the type system.
 
 {% highlight javascript %}
 var string = 'Hello'
@@ -94,15 +94,17 @@ Since `null` is supposedly a valid subtype of `Person` and `Employee`, it belong
 
 {% include image.html url="/images/posts/properties.png" description="Sets of the properties" %}
 
-Notice that substituting an `Employee` wherever the program is expecting a `Person` will work fine, since `Employee` has a superset of the properties of `Person`.  But see the issue with `null`?  This is why `null` fundamentally should not be modeled as the same type or a subtype.  Having `null` be a subtype of all objects breaks the LSP because `null` does not possess _any_ properties, let alone a superset of properties.  So when we access a property of an object that is actually `null`, it doesn't have that property; thus breaking the LSP and causing an NPE.
+Notice that substituting an `Employee` wherever the program is expecting a `Person` will work fine, since `Employee` has a superset of the properties of `Person`; but do you see the issue with `null`?  This is why `null` fundamentally should not be modeled as the same type or a subtype.  Having `null` be a subtype of all objects breaks the LSP because `null` does not possess _any_ properties, let alone a superset of properties.  So, when we access a property of an object that is actually `null`, it doesn't have that property; thus breaking the LSP and causing an NPE.
 
 ## The Solution
 
 The solution to this problem is, conceptually, very straight forward;  the type system has to keep track of which references are possibly `null` and which are not.  If the type system knew which references were possibly `null`, then not checking if it were `null` before using it wouldn't just be bad practice and an NPE at runtime, but would become an error at compile time; which is exactly what we want.
 
-There are two ways that I know of that this can be implemented:  with a generic wrapper type which would denote a nullable reference, something like C#'s `Nullable<T>`, Scala's or Rust's `Option`, or Kotlin's `T?`, or with a type union of some type `T` with `Null`.  This is how Typescript handles `null` and this is also planned for a future version of Scala and would look like `T | Null` which means `T` or `Null`.
+There are two ways that I know of that this can be implemented:  
+* A generic wrapper type which would denote a nullable reference, something like C#'s `Nullable<T>`, Scala's or Rust's `Option`, or Kotlin's `T?`
+* A type union of some type `T` with `Null`.  This is how Typescript handles `null` and this is also planned for a future version of Scala and would look like `T | Null` which means `T` or `Null`.
 
-Remember before how I mentioned that `null` being modeled as a subtype of other types was due to a deficiency in the type systems of languages where that `null` is modeled that way?  Well that deficiency is the lack of generics or union types.  Without either one of these mechanisms, you can't create nullable versions of any existing type in the type system.
+Earlier I mentioned that `null` being modeled as a subtype of other types was due to a deficiency in the type systems of languages where `null` is modeled that way?  Well that deficiency is the lack of generics or union types.  Without either one of these mechanisms, you can't create nullable versions of any existing type in the type system.
 
 ## Conclusion
 
