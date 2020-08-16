@@ -122,12 +122,3 @@ Key: :heavy_check_mark:️ = Good, :warning: = Problematic, :no_entry: = Bad
 After evaluating all of the options available, I wasn't quite satisfied with any of them, so I decided to create a new way via Scala's [blackbox macros](https://docs.scala-lang.org/overviews/macros/blackbox-whitebox.html).
 
 > \*So it seems someone has created a safe navigation operator for Scala since I began this project :sweat_smile:.  Well, never hurts to have more options, right?
-
-<br/>
-
-***
-
-<div class="PageNavigation">
-  {% include navigation_link.html reference=page.previous class='prev' %}
-  {% include navigation_link.html reference=page.next class='next' %}
-</div>

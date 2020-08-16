@@ -117,17 +117,4 @@ Modeling `null` as the same type or subtype of other types in the type system is
 * <https://stackoverflow.com/questions/218384/what-is-a-nullpointerexception-and-how-do-i-fix-it>
 * <https://en.wikipedia.org/wiki/Subtyping>
 
-<br/>
-
-***
-
-<br/>
-
 In the next part, we'll examine the current strategies for dealing with null safety in Scala today, given the way `null` works.
-
-<div class="PageNavigation">
-
-  {% include navigation_link.html reference=page.previous class='prev' %}
-  {% include navigation_link.html reference=page.next class='next' %}
-</div>
-

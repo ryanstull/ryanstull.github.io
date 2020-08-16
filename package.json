@@ -1,0 +1,7 @@
+{
+  "name": "ryanstull.github.io",
+  "version": "1.0.0",
+  "dependencies": {
+    "anchor-js": "^4.2.2"
+  }
+}

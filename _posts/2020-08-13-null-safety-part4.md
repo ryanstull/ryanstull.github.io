@@ -43,8 +43,3 @@ Which is great!  Because this solves the [original and fundamental problem we we
 I could go in depth about the exciting changes in this project and how it would work, but I'd just be reiterating the [project description](https://gist.github.com/abeln/9f79774bac111d99b3ae2cb9016a33e6), so I'll just encourage you to check that out.  There's also the description of this feature [on the dotty website](https://dotty.epfl.ch/docs/reference/other-new-features/explicit-nulls.html).  I'm very excited to see these features getting added to Scala, and I think it's a big step forward for the language.  
 
 Hopefully you've found this series useful, and you will find the ScalaNullSafe macro useful for the rest of the time you're using Scala 2 :sweat_smile:.  Thanks!
-
-<div class="PageNavigation">
-  {% include navigation_link.html reference=page.previous class='prev' %}
-  {% include navigation_link.html reference=page.next class='next' %}
-</div>

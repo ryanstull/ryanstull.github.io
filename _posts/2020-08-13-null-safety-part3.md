@@ -285,15 +285,4 @@ You can find the source code for the JMH benchmarks [here](https://github.com/ry
 
 These benchmarks compare all of the known ways (or at least the ways that I know of) to handle null-safety in scala. It demonstrates that the explicit null-safety is the highest performing and that the ScalaNullSafe macro has equivalent performance.
 
-<br/>
-
-***
-
-<br/>
-
 In the next section we'll examine how the usage of `null` will evolve in the next major version of Scala, Scala 3, AKA Dotty.
-
-<div class="PageNavigation">
-  {% include navigation_link.html reference=page.previous class='prev' %}
-  {% include navigation_link.html reference=page.next class='next' %}
-</div>
