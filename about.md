@@ -6,7 +6,7 @@ permalink: /about/
 
 <section id="about">
 	<div id="proPicWrapper">
-		<img src="/images/about/ProPic.png" alt="Profile Picture" id="proPic"/>
+		<img src="https://media.githubusercontent.com/media/ryanstull/ryanstull.github.io/master/images/about/ProPic.png?raw=true" alt="Profile Picture" id="proPic"/>
 	</div>
 	<div class="personal_words">
 		My name is Ryan. I am currently working in the tech industry as a software engineer, while living in the New York area.<br/> <br/>
