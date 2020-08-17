@@ -29,6 +29,9 @@ plugins:
   - jekyll-feed
   - jemoji
 
+disqus:
+  shortname: ryanstull
+
 header_pages:
   - projects.md
   - resume.md
