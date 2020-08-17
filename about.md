@@ -15,7 +15,7 @@ permalink: /about/
 		My professional interests include application development, simulation, big data, and in general any cross disciplinary subjects between
 		CompSci and Math/Physics.
         <br/> <br/>
-        Outside of work my interests include skiing, MMA, science and tech in general, piano, concerts, frisbee, and the shore<span class="asterisk">*</span>!
+        Outside of work my interests include skiing, MMA, science and tech in general, piano, frisbee, and the shore<span class="asterisk">*</span>!
         <br/> <br/>
         <span class="footnote"><span class="asterisk">*</span> The beach, for all you non-Jersey natives</span>
 	</div>
