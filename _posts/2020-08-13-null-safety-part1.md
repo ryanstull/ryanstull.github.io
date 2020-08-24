@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Null-safety Part 1: The Problem"
+title:  "Null-safety Part 1: The Fundamental Problem with Null"
 date:   2020-08-13 13:42:24 -0400
 categories: blog
 tag: scala
