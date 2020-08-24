@@ -18,7 +18,7 @@ val a: A = null
 a.b.c //Would result in an NPE
 {% endhighlight %}
 
-Most Scala programmers would opt to wrap their code in `Option` in order to avoid NPEs, however sometimes you don't have the *option* (pun intended) to do this.  I frequently ran into this situation at my work, where we needed to pull data out of highly nested [Avro](https://en.wikipedia.org/wiki/Apache_Avro) classes, in some cases 6 levels deep.  [Avro schemas](https://avro.apache.org/docs/current/idl.html) get compiled into regular Java objects, that don't use `Option`.  So then what, if your code is not designed around `Option`, is the best approach to extract deeply nested values in a null-safe way?  Essentially, what is missing from Scala here is a [safe navigation operator](https://en.wikipedia.org/wiki/Safe_navigation_operator) similar to Groovy or Kotlin.*
+Most Scala programmers would opt to wrap their code in `Option` in order to avoid NPEs, however sometimes you don't have the *option* (pun intended) to do this.  I frequently ran into this situation at my work, where we needed to pull data out of highly nested [Avro](https://en.wikipedia.org/wiki/Apache_Avro) classes, in some cases 6 levels deep.  [Avro schemas](https://avro.apache.org/docs/current/idl.html) get compiled into regular Java objects, that don't use `Option`.  So then what, if your code is not designed around `Option`, is the best approach to extract deeply nested values in a null-safe way?  Essentially, what is missing from Scala here is a [safe navigation operator](https://en.wikipedia.org/wiki/Safe_navigation_operator) similar to Groovy or Kotlin.§
 
 In order to find the best solution to this problem, I began by enumerating all of the possible ways that I could think of to implement null-safe access.
 
@@ -59,7 +59,7 @@ for {
 
 Similar to the approach #2, but slightly slower and worse readability.
    
-#### 4. Null-safe navigator
+#### 4. Null-safe navigator extension method
 {% highlight scala %}
 implicit class nullSafe[A](val a: A) extends AnyVal {
  def ?[B <: AnyRef](f: A => B): B = if (a == null) null else f(a)
@@ -83,9 +83,42 @@ try { a.b.c } catch {
 
 **Cons:** Harsh performance penalty in case of NPE.  Could intercept other NPEs
 
+#### 6. Monocle Lenses
+
+{% highlight scala %}
+import monocle.Optional
+val aGetB = Optional[A,B]{
+    case A(b) if b != null => Some(b)
+    case _ => None
+}(b => { case A(_) => A(b) })
+val bGetC = Optional[B,C]{
+    case B(c) if c != null => Some(c)
+    case _ => None
+}(c => { case B(_) => B(c) })
+val aGetC = aGetB composeOptional bGetC
+
+aGetC.getOption(a)
+{% endhighlight %}
+
+I didn't really consider using lenses when I began this project, but someone asked me one time, "Why not use lenses, like in Monocle?" So I tried it out, but it didn't succeed in either read/writability, or performance, in this use case.
+
+#### 7. § com.thoughtworks NullSafe DSL
+
+So actually, when I began this project I didn't know that [this library](https://users.scala-lang.org/t/nullsafe-kotlin-groovy-flavored-null-safe-operator-now-in-scala/3244) existed.  Essentially what it does is add in the missing safe navigation operator to Scala, via a compiler plugin.
+
+{% highlight scala %}
+import com.thoughtworks.dsl.keywords.NullSafe._
+
+a.?.b.?.c
+{% endhighlight %}
+
+It has nice syntax, but it does introduce some performance overhead.
+
+## Comparing Approaches
+
 Here are some benchmarks of the different approaches.
 
-{% include image.html url="/images/posts/throughput 1.png" description="Performance of different null-safe implementations" %}
+{% include image.html url="/images/posts/nullSafe/throughput 1.png" description="Performance of different null-safe implementations" %}
 
 <details>
   <summary>Data in tabular form</summary>
@@ -102,6 +135,10 @@ Here are some benchmarks of the different approaches.
 [info] Benchmarks.nullSafeNavigatorPresent  thrpt   20  181.356 ± 1.538  ops/us
 [info] Benchmarks.tryCatchSafeAbsent        thrpt   20  254.158 ± 0.686  ops/us
 [info] Benchmarks.tryCatchSafePresent       thrpt   20  230.081 ± 0.659  ops/us
+[info] Benchmarks.monocleOptionalAbsent     thrpt   20   77.755 ± 0.800  ops/us
+[info] Benchmarks.monocleOptionalPresent    thrpt   20   36.446 ± 0.506  ops/us
+[info] Benchmarks.nullSafeDslAbsent         thrpt   30  228.660 ± 0.475  ops/us
+[info] Benchmarks.nullSafeDslPresent        thrpt   30  119.723 ± 0.506  ops/us
 [success] Total time: 3909 s, completed Feb 24, 2019 3:03:02 PM
 {% endhighlight %}
 </details><br/>
@@ -116,9 +153,9 @@ In order to summarize the pros and cons of each approach, let's evaluate them ba
 | For loop flatMap     	| :heavy_check_mark:️    | :warning:️                 	| :no_entry:         	|
 | Null-safe navigator  	| :heavy_check_mark:️    | :warning:️                 	| :warning:️         	|
 | Try-catch NPE        	| :heavy_check_mark:️    | :heavy_check_mark:️            | :warning:️         	|
+| Monocle Optional (lenses)| :heavy_check_mark:️ | :skull:                       | :warning:         	|
+| thoughtworks NullSafe DSL| :heavy_check_mark:️ | :heavy_check_mark:            ️| :warning:️         	|
 
-Key: :heavy_check_mark:️ = Good, :warning: = Problematic, :no_entry: = Bad
+Key: :heavy_check_mark:️ = Good, :warning: = Sub-optimal, :no_entry: = Bad
 
 After evaluating all of the options available, I wasn't quite satisfied with any of them, so I decided to create a new way via Scala's [blackbox macros](https://docs.scala-lang.org/overviews/macros/blackbox-whitebox.html).
-
-> \*So it seems someone has created a safe navigation operator for Scala since I began this project :sweat_smile:.  Well, never hurts to have more options, right?

@@ -8,7 +8,7 @@ tag: scala
 
 ## Existing Options
 
-So unfortunately there's at least one issue with all of the different existing approaches.  The best one in terms of performance is the <a href="{{page.previous.url}}#1-explicit-null-safety"> explicit null-checks</a>, and the only problem with that is that it's hard to read and write; but what if we could make it easy to do so?
+So, unfortunately there's at least one issue with all of the different existing approaches.  The best one in terms of performance is the <a href="{{page.previous.url}}#1-explicit-null-safety"> explicit null-checks</a>, and the only problem with that is that it's hard to read and write; but what if we could make it easy to do so?
 
 ## Enter the macro
 
@@ -42,22 +42,19 @@ val a2 = A(B(C))
 
 With this approach we get the best possible solution, something that is null-safe, easy to read and write, and efficient!
 
-<details markdown="1">
-  <summary>Full Comparison Chart</summary>
-  
 |                      	| Null-safe 	| Readable / Writable 	| Efficient 	|
 |----------------------	|-----------	|-------------------	|-----------	|
-| ScalaNullSafe        	| :heavy_check_mark:  	| :heavy_check_mark:️            | :heavy_check_mark:️    |
+| :tada: **ScalaNullSafe** :tada: | :heavy_check_mark:  	| :heavy_check_mark:️            | :heavy_check_mark:️    |
 | Normal access        	| :no_entry:         	| :heavy_check_mark:️            | :heavy_check_mark:️    |
 | Explicit null-checks 	| :heavy_check_mark:️    | :no_entry:                 	| :heavy_check_mark:️    |
 | Option flatMap       	| :heavy_check_mark:️    | :no_entry:                 	| :no_entry:         	|
 | For loop flatMap     	| :heavy_check_mark:️    | :warning:️                 	| :no_entry:         	|
 | Null-safe navigator  	| :heavy_check_mark:️    | :warning:️                 	| :warning:️         	|
 | Try-catch NPE        	| :heavy_check_mark:️    | :heavy_check_mark:️            | :warning:️         	|
-   
-</details><br/>
+| Monocle Optional (lenses)| :heavy_check_mark:️ | :skull:                       | :warning:         	|
+| thoughtworks NullSafe DSL| :heavy_check_mark:️ | :heavy_check_mark:            ️| :warning:️         	|
 
-
+Key: :heavy_check_mark:️ = Good, :warning: = Sub-optimal, :no_entry: = Bad
 
 ## How to get it
 
@@ -65,7 +62,7 @@ I've published the [source code for the macro on github](https://github.com/ryan
 
 To add it to your project, just add the dependency
 
-{% highlight scala %}
+{% highlight sbt %}
 libraryDependencies += "com.ryanstull" %% "scalanullsafe" % "1.2.5"
 {% endhighlight %}
 
@@ -79,8 +76,10 @@ and you're good to go!
 
 ## More features
 
+There's also two other variants of the macro:
+
 ### Opt macro
-There's also two other variants of the macro, `opt`, which is useful for interoping with Java code and work as follows:
+`opt`, which is useful for interoping with Java code and work as follows:
 
 {% highlight scala %}
 
@@ -254,7 +253,7 @@ else
 
 Here's the result of running the included jmh benchmarks:
 
-{% include image.html url="/images/posts/throughput.png" description="Performance of different null-safe implementations" %}
+{% include image.html url="/images/posts/nullSafe/throughput.png" description="Performance of different null-safe implementations" %}
 
 <details>
   <summary>Data in tabular form</summary>
@@ -269,17 +268,19 @@ Here's the result of running the included jmh benchmarks:
 [info] Benchmarks.optionSafePresent         thrpt   20  129.394 ± 0.102  ops/us
 [info] Benchmarks.loopSafeAbsent            thrpt   20  114.330 ± 0.113  ops/us
 [info] Benchmarks.loopSafePresent           thrpt   20   59.513 ± 0.097  ops/us
-[info] Benchmarks.monocleOptionalAbsent     thrpt   20   77.755 ± 0.800  ops/us
-[info] Benchmarks.monocleOptionalPresent    thrpt   20   36.446 ± 0.506  ops/us
 [info] Benchmarks.nullSafeNavigatorAbsent   thrpt   20  274.222 ± 0.441  ops/us
 [info] Benchmarks.nullSafeNavigatorPresent  thrpt   20  181.356 ± 1.538  ops/us
 [info] Benchmarks.tryCatchSafeAbsent        thrpt   20  254.158 ± 0.686  ops/us
 [info] Benchmarks.tryCatchSafePresent       thrpt   20  230.081 ± 0.659  ops/us
+[info] Benchmarks.monocleOptionalAbsent     thrpt   20   77.755 ± 0.800  ops/us
+[info] Benchmarks.monocleOptionalPresent    thrpt   20   36.446 ± 0.506  ops/us
+[info] Benchmarks.nullSafeDslAbsent         thrpt   30  228.660 ± 0.475  ops/us
+[info] Benchmarks.nullSafeDslPresent        thrpt   30  119.723 ± 0.506  ops/us
 [success] Total time: 3909 s, completed Feb 24, 2019 3:03:02 PM
 {% endhighlight %}
 </details><br/>
 
-You can find the source code for the JMH benchmarks [here](https://github.com/ryanstull/ScalaNullSafe/blob/ebc0ed592fa5997a9c7b868cf8cdcea590e8ae07/benchmarks/src/test/scala/com/ryanstull/nullsafe/Benchmarks.scala#L18).  If you want to run the benchmarks yourself, just run `sbt bench`.
+You can find the source code for the JMH benchmarks [here](https://github.com/ryanstull/ScalaNullSafe/blob/ebc0ed592fa5997a9c7b868cf8cdcea590e8ae07/benchmarks/src/test/scala/com/ryanstull/nullsafe/Benchmarks.scala#L18).  If you want to run the benchmarks yourself, just run `sbt bench`, or `sbt quick-bench` for a shorter run.
 
 ## Conclusion
 
