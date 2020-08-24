@@ -73,7 +73,7 @@ In object oriented terms:
 
 Yet another way (and perhaps my favorite):
 
-> A subtype must possess a superset of the properties of it's supertype.
+> A subtype must possess a superset of the properties of its supertype.
 
 So what the LSP is saying is, because in most languages subtypes can be used anywhere a supertype is expected, attempts to access properties defined in the supertype, must work on the subtype without error.
 
