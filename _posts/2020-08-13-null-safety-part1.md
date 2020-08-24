@@ -101,8 +101,8 @@ Notice that substituting an `Employee` wherever the program is expecting a `Pers
 The solution to this problem is, conceptually, very straight forward;  the type system has to keep track of which references are possibly `null` and which are not.  If the type system knew which references were possibly `null`, then not checking if it were `null` before using it wouldn't just be bad practice and an NPE at runtime, but would become an error at compile time; which is exactly what we want.
 
 There are two ways that I know of that this can be implemented:  
-* A generic wrapper type which would denote a nullable reference, something like C#'s `Nullable<T>`, Scala's or Rust's `Option`, or Kotlin's `T?`
-* A type union of some type `T` with `Null`.  This is how Typescript handles `null` and this is also planned for a future version of Scala and would look like `T | Null` which means `T` or `Null`.
+* A generic wrapper type which would denote a nullable reference, something like C#'s `Nullable<T>`, Scala's `Option[T]`, Rust's `Option<T>`, or Kotlin's `T?`
+* A type union of some type `T` with `Null`, which would look like `T | Null`.  Typescript can handle `null` this way with the `--strictNullChecks` flag, and this is also planned for a future version of Scala.
 
 Earlier I mentioned that `null` being modeled as a subtype of other types was due to a deficiency in the type systems of languages where `null` is modeled that way.  That deficiency is the lack of generics or union types.  Without either one of these mechanisms, you can't create nullable versions of any existing type in the type system.
 

@@ -31,6 +31,7 @@ plugins:
 
 disqus:
   shortname: ryanstull
+google_analytics: UA-89097574-1
 
 header_pages:
   - projects.md
